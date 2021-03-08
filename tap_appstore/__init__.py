@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta, date
 import os
 import json
 from typing import Dict, Union, List
@@ -115,8 +114,8 @@ def load_schemas():
 def discover(api: Api):
     raw_schemas = load_schemas()
     streams = []
+    report_date = (date.today() - timedelta(days=2)).strftime("%Y-%m-%d")
     for schema_name, schema in raw_schemas.items():
-        report_date = datetime.strptime(get_bookmark(schema_name), "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
         filters = get_api_request_fields(report_date, schema_name)
 
         report = _attempt_download_report(api, filters)
